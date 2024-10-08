@@ -40,8 +40,6 @@ class AuthController{
             $_SESSION["username"] = $username; 
 
             $_SESSION["user_id"]= $this->user->getUserIdByUserName($username);
-            // echo "funkcja "getUserIdByUsername($username);
-            // echo $_SESSION["user_id"];
             header("Location: ?action=dashboard"); 
             exit(); 
         } else {

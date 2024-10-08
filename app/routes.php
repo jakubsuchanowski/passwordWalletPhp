@@ -34,6 +34,12 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
                 $user_id=$_SESSION['user_id'];
                 $passwordController->add($website, $username, $password, $user_id);
                 break;
+            case 'updatePassword':
+                $id=$_POST['id'];
+                $website=$_POST['website'];
+                $username=$_POST['username'];
+                $password=$_POST['password'];
+                $passwordController->editPassword( $id, $website,$username, $password);
 
         }
     }
@@ -47,8 +53,11 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
                     include 'app/views/login.php';
                     break;
                 case 'dashboard':
-                    if (isset($_SESSION['username'])) {
+                    if (isset($_SESSION['username']) &&  isset($_SESSION['user_id'])) {
+                        $user_id=$_SESSION['user_id'];
+                        $passwords=$passwordController->showPasswords($user_id);
                         include 'app/views/dashboard.php';
+
                     }else{
                         header('Location:?action=login');
                         exit();
@@ -56,6 +65,11 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
                     break;
                 case 'addPassword':
                     include 'app/views/addPassword.php';
+                    break;
+                case 'updatePassword':
+                    $passwordId=$_GET['id'];
+                    $password=$passwordController->getPasswordById($passwordId);
+                    include 'app/views/updatePassword.php';
                     break;
             }
         }else{

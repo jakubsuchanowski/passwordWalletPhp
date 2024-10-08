@@ -1,14 +1,11 @@
 <?php 
-require_once 'app/crypto/Crypto.php';
 require_once 'app/models/Password.php';
 class PasswordController{
     private $password;
-    private $crypto;
     public function __construct($ecnryption_key){
         $config=new Config();
         $conn=$config->connect();
-        $this->crypto = new Crypto($ecnryption_key);
-        $this->password = new Password($conn,$this->crypto);
+        $this->password = new Password($conn);
     }
 
     public function add($website,$username,$password,$user_id){
@@ -30,12 +27,42 @@ class PasswordController{
             $_SESSION["error"]= "Nie można odnaleźć użytkownika.";
         }
     
-        if($this->password->getPasswords($user_id)){
-            $_SESSION["success"]= "Pobrano hasła.";
+        $passwords=$this->password->getPasswords($user_id);
+        // var_dump($passwords);
+        if(empty($passwords)){
+            $_SESSION['error']="Nie udało się pobrać haseł. Brak haseł.";
+            return [];
         }else{
-            $_SESSION['error']="Nie udało się pobrać haseł.";
+            return $passwords;
+
         }
 
+    }
+    public function getPasswordById($password_id){
+        $password=$this->password->findPasswordById($password_id);
+        if(empty($password)){
+            $_SESSION["error"]= "Nie udało się pobrać hasła.";
+            return null;
+        }else{
+        return $password;
+        }
+    }
+
+    public function editPassword($id,$website, $username, $password){
+        if(empty($id)||empty($password)||empty($username)||empty($website)){
+            $_SESSION['error']="Wszystkie pola są wymagane.";
+            return;
+        }
+        
+        error_log("Updating password for ID: $id, Website: $website, Username: $username");
+        $result=$this->password->updatePassword($id,$website,$username,$password);
+        if($result){
+            var_dump($result);
+            $_SESSION["success"]= "Hasło zaktualizowane.";
+            header("Location: ?action=dashboard");
+        }else{
+            $_SESSION["error"]= "Nie udało zaktualizować hasła.";
+        }
     }
 }
 ?>

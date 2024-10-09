@@ -38,7 +38,7 @@ class PasswordController{
 
     }
     public function getPasswordById($password_id){
-        $password=$this->password->findPasswordById($password_id);
+        $password=$this->password->findPasswordObjectById($password_id);
         if(empty($password)){
             $_SESSION["error"]= "Nie udało się pobrać hasła.";
             return null;
@@ -56,7 +56,6 @@ class PasswordController{
         error_log("Updating password for ID: $id, Website: $website, Username: $username");
         $result=$this->password->updatePassword($id,$website,$username,$password);
         if($result){
-            var_dump($result);
             $_SESSION["success"]= "Hasło zaktualizowane.";
             header("Location: ?action=dashboard");
         }else{
@@ -75,7 +74,9 @@ class PasswordController{
     }
 
     public function showDecryptedPassword($id){
-        $hashedPassword=$this->password->findPasswordById($id);
+        $passwordObject=$this->password->findPasswordObjectById($id);
+        $hashedPassword=$passwordObject["password"];
+        // var_dump($hashedPassword);
         if(empty($hashedPassword)){
             $_SESSION["error"]= "Nie odnaleziono hasła.";
         }else{
@@ -85,7 +86,7 @@ class PasswordController{
     }
 
     public function showEncryptedPassword($id){
-        $hashedPassword=$this->password->findPasswordById($id);
+        $hashedPassword=$this->password->findPasswordObjectById($id);
         return $hashedPassword;
         }
 }

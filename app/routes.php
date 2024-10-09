@@ -46,16 +46,21 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
                 $id=$_GET['id'];
                 $passwordController->deletePassword($id);
                 break;
-            // case 'showPassword':
-            //     $showPassword=true;
-            //     $id=$_GET['id'];
-            //     $passwordController->showDecryptedPassword( $id );
-            //     break;
-            // case 'hidePassword':
-            //     $showPassword=false;
-            //     $id=$_GET['id'];
-            //     $passwordController->showEncryptedPassword( $id );
-            //     break;
+            case 'showPassword':
+                $_SESSION['showPassword'][$_GET['id']] = true;
+                $id=$_GET['id'];
+                var_dump($_SESSION['showPassword'][$id]);
+                header("Location: ?action=dashboard");
+                
+                // $passwordController->showDecryptedPassword( $id );
+                break;
+            case 'hidePassword':
+                $_SESSION['showPassword'][$_GET['id']] = false;
+                $id=$_GET['id'];
+                var_dump($_SESSION['showPassword']['id']);
+                header("Location: ?action=dashboard");
+                // $passwordController->showEncryptedPassword( $id );
+                break;
         }
     }
 }else{

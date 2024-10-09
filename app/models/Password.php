@@ -39,7 +39,7 @@ class Password{
         return $passwords; 
     }
 
-    public function findPasswordById($id){
+    public function findPasswordObjectById($id){
         $sql= "SELECT * FROM passwords WHERE id=?";
         $stmt=$this->conn->prepare($sql);
         $stmt->bind_param("i", $id);

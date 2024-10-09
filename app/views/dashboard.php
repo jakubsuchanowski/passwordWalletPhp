@@ -23,20 +23,33 @@
     </tr>
   </thead>
   <tbody>
-  <?php foreach ($passwords as $password): ?>
-    <tr>
-    
+  <?php foreach ($passwords as $password): ?>    
         <td><?php echo htmlspecialchars($password['id']);?></td>
         <td><?php echo htmlspecialchars($password['website']);?></td>
         <td><?php echo htmlspecialchars($password['login']);?></td>
-        <td><?php echo htmlspecialchars($password['password']);?></td>
-        
+        <td>
+            <?php if (!isset($_SESSION['showPassword'][$password['id']]) || $_SESSION['showPassword'][$password['id']] === false): ?>
+            <span>********</span> <!-- Ukryj hasło -->
+                <?php else: ?>
+            <span><?php echo htmlspecialchars($passwordController->showDecryptedPassword($password['id'])); ?></span> <!-- Pokaż odszyfrowane hasło -->
+            <?php endif; ?>
+        </td>
         <td class="actions">
-        <a href="#" onclick="document.getElementById('show-button').submit();return false;">
+        <?php if (!isset($_SESSION['showPassword'][$password['id']]) || $_SESSION['showPassword'][$password['id']] === false): ?>
+            <a href="#" onclick="document.getElementById('show-button-form').submit();return false;">
                 <button type="button" class="show-button" id="show-button">Pokaż hasło</button>
         </a>
-            <form action="?action=showPassword&id= <?php echo $password['id'] ?>" style="display:none">
+            <form id="show-button-form" action="?action=showPassword&id= <?php echo $password['id'] ?>" method="POST" style="display:none;">
                 <input type="hidden" name="show" value="true"></form>
+            <?php else: ?>
+                <a href="#" onclick="document.getElementById('hide-button-form').submit();return false;">
+                <button type="button" class="hide-button" id="hide-button">Ukryj hasło</>
+        </a>
+            <form id="hide-button-form" action="?action=hidePassword&id=<?php echo $password['id']; ?>" method="POST" style="display:none;">
+            <input type="button" class="hide-button">
+            </form>
+            <?php endif; ?>
+
         <a href="?action=updatePassword&id=<?php echo $password['id']; ?>">
             <button type="button" class="update-button" name="update-button">Edytuj hasło</button>
         </a>

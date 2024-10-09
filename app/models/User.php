@@ -40,7 +40,7 @@ class User{
         $result=$stmt->get_result();
         if($result->num_rows===1 ){
             $user = $result->fetch_assoc();
-            var_dump(hash_equals($user['password'],$inputPassword));
+            // var_dump(hash_equals($user['password'],$inputPassword));
             if(hash_equals($user['password'],$inputPassword)){
                 return true;
         } else{

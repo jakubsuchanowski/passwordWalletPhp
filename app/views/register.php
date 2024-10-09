@@ -12,6 +12,9 @@
     <input type="text" name="username"><br>
     <label for="password">Hasło:</label><br>
     <input type="password" name="password"><br>
+    <label>Rodzaj szyfrowania:</label>
+    <input type="radio" name="encryptOption" value="HMAC" required>HMAC</input>
+    <input type="radio" name="encryptOption" value="Sha512" required>SHA512</input><br>
     <div class="button-container">
     <button type="submit">Zarejestruj</button><br>
     </div>

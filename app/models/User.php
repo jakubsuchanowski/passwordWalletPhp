@@ -6,14 +6,26 @@ class User{
         $this->conn = $db_conn;
     }
 
-    public function register($username, $password){
+    public function registerWithHMAC($username, $password, $encryptMethod){
         if($this->isUserExist($username)){
             return "Użytkownik o tym loginie już istnieje.";
         }else
-        $passwordHash=password_hash($password,PASSWORD_DEFAULT);
-        $sql="INSERT INTO users(username,password) values(?,?)";
+        $sql="INSERT INTO users(username,password,encryption_method) values(?,?,?)";
         $stmt= $this->conn->prepare($sql);
-        $stmt->bind_param("ss",$username, $passwordHash);
+        $stmt->bind_param("sss",$username, $password,$encryptMethod);
+        if($stmt->execute()){
+            return true;
+        }else {
+            return "Błąd podczas rejestracji: " .$stmt->error;
+        }
+    }
+    public function registerWithSHA512($username, $password, $encryptMethod,$salt){
+        if($this->isUserExist($username)){
+            return "Użytkownik o tym loginie już istnieje.";
+        }else
+        $sql="INSERT INTO users(username,password,encryption_method,salt) values(?,?,?,?)";
+        $stmt= $this->conn->prepare($sql);
+        $stmt->bind_param("ssss",$username, $password,$encryptMethod,$salt);
         if($stmt->execute()){
             return true;
         }else {
@@ -21,14 +33,15 @@ class User{
         }
     }
 
-    public function login($username, $password){
+    public function login($username, $inputPassword){
         $stmt=$this->conn->prepare("SELECT * FROM users WHERE username=?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $result=$stmt->get_result();
         if($result->num_rows===1 ){
             $user = $result->fetch_assoc();
-            if(password_verify($password, $user['password'])){
+            var_dump(hash_equals($user['password'],$inputPassword));
+            if(hash_equals($user['password'],$inputPassword)){
                 return true;
         } else{
             return "Nieprawidłowe hasło.";
@@ -63,6 +76,30 @@ public function isUserExist($username){
         return false;
     }else{
         return true;
+    }
+}
+public function getEncryptMethodByUsername($username){
+    $sql="SELECT encryption_method FROM USERS WHERE username=?";
+    $stmt=$this->conn->prepare($sql);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if($result->num_rows ===1){
+        $user= $result->fetch_assoc();
+        return $user["encryption_method"];
+    }else {
+        return null;
+    }
+}
+public function getSalt($username){
+    $sql= "SELECT salt from users where username=?";
+    $stmt=$this->conn->prepare($sql);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result=$stmt->get_result();
+    if($result->num_rows === 1){
+        $user= $result->fetch_assoc();
+        return $user["salt"];
     }
 }
 }

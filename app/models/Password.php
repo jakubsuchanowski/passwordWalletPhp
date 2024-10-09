@@ -1,5 +1,5 @@
 <?php
-require_once 'app/config/config.php';
+require_once 'app/config/keys.php';
 class Password{
     private $conn;
 
@@ -56,6 +56,21 @@ class Password{
         if($stmt->execute()){
             return true;
         }else{return false;}
+    }
+
+    public function delete($id){
+        $sql="DELETE FROM passwords WHERE id=?";
+        $stmt=$this->conn->prepare($sql);
+        $stmt->bind_param("i",$id);
+        
+        if($stmt->execute()){
+            return true;
+        }else{return false;}
+    }
+
+    public function getDecryptPassword($hashedPassword){
+        $decryptedPassword=$this->decryptPassword($hashedPassword);
+        return $decryptedPassword;
     }
    
 }

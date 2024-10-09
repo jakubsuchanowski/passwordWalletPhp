@@ -12,14 +12,6 @@ form{
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-.navbar {
-    background-color: rgb(5, 5, 52); 
-    padding: 10px 20px; 
-    color: white; 
-    display: flex; 
-    justify-content: flex-end; 
-    align-items: center;
-}
 
 label{
     display: block;
@@ -41,6 +33,7 @@ button {
     background-color: #28a745;
     color: white;
     border: none;
+    margin-top: 10px;
     padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
@@ -61,45 +54,28 @@ p {
     margin: 15px 0;
 }
 
-.logout-form{
-    background-color: rgb(5, 5, 52);;
-    margin-bottom: 20px;
-    text-align: right;
-    margin-left: auto;
-}
-.logout-form button {
-    background-color: #dc3545; 
-    color: white; 
-    border: none; 
-    padding: 10px 15px; 
-    border-radius: 5px;
-    cursor: pointer; 
-    font-size: 16px; 
-}
-.logout-form button:hover {
-    background-color: #c82333; 
-}
 .table-container{
     max-width: auto;
-    margin:50px auto;
+    max-height:fit-content;
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 .table {
-    width: 100%; /* Ustalamy szerokość tabeli */
-    border-collapse: collapse; /* Usuwamy podwójne obramowanie */
-    margin-top: 20px; /* Ustalamy margines górny */
-    background-color: white; /* Ustalamy tło tabeli */
+    width: 100%; 
+    height: 70%;
+    border-collapse: collapse; 
+    margin-top: 10px;
+    background-color: white; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Cień pod tabelą */
 }
 
 /* Styl dla nagłówków tabeli */
 .table th {
-    background-color: #007bff; /* Niebieski kolor tła */
-    color: white; /* Biały kolor tekstu */
-    padding: 10px; /* Ustalamy padding */
+    background-color: #4c4e50;
+    color: white; 
+    padding: 10px; 
 }
 
 /* Styl dla komórek tabeli */
@@ -110,18 +86,31 @@ p {
 
 /* Styl dla przycisków w tabeli */
 .table button {
-    background-color: #28a745; /* Zielony kolor tła */
     color: white; /* Biały kolor tekstu */
     border: none; /* Usuwamy obramowanie */
-    padding: 5px 10px; /* Ustalamy padding */
+    padding: 10px 10px; /* Ustalamy padding */
     border-radius: 5px; /* Zaokrąglone krawędzie */
     cursor: pointer; /* Zmiana kursora na wskaźnik */
 }
 
-/* Efekt hover dla przycisków w tabeli */
-.table button:hover {
-    background-color: #218838; /* Ciemniejszy zielony kolor */
+
+.actions {
+    width:350px;
+    text-align: center;
 }
+.update-button{
+    background-color: rgb(157, 157, 19);
+}
+.update-button:hover{
+    background-color: rgb(105, 105, 26);
+}
+.delete-button{
+    background-color: rgb(181, 34, 34);
+}
+.delete-button:hover{
+    background-color: rgb(130, 26, 26);
+}
+
 
 /* Styl dla komunikatów o błędach i sukcesie */
 p {
@@ -137,4 +126,85 @@ p[style*="color:red"] {
 /* Styl dla komunikatów o sukcesie */
 p[style*="color:green"] {
     color: green; /* Ustalamy kolor tekstu dla sukcesów */
+}
+.dashboard-head{
+    margin:20px;
+    padding-left: 20px;
+}
+
+/* navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    padding: 10px 20px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+}
+
+.navbar-left a.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.navbar-right ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-right ul li {
+    margin-left: 20px;
+}
+
+/* Dropdown styles */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-btn {
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+}
+
+.dropdown-btn:hover {
+    background-color: #555;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    right: 0;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
 }

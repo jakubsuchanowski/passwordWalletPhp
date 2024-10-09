@@ -7,13 +7,10 @@
     <title>Document</title>
 </head>
 <body>
-<div class="navbar">
-    <form class="logout-form" action="?action=logout" method="POST">
-    <button type="submit" name="logout">Wyloguj</button>
-    </form>
-</div>
-    <h2>Cześć <?php echo $_SESSION['username']?>, jesteś zalogowany.</h2>
+    <?php include 'navbar.php'; ?>
+<div class="dashboard-head">
     <a href="?action=addPassword"><button type="button">Dodaj hasło</button></a>
+    </div>
     <?php if (!empty($passwords)): ?>
         <div class="table-container">
     <table class="table">
@@ -34,12 +31,21 @@
         <td><?php echo htmlspecialchars($password['login']);?></td>
         <td><?php echo htmlspecialchars($password['password']);?></td>
         
-        <td>
-            <a href="?action=updatePassword&id=<?php echo $password['id']; ?>">
-                <button type="button" name="update-button">Edytuj hasło</button></a>
-            <form action="deletePassword" method="POST">
-            <button type="submit">Usuń hasło</button>
-        </form></td>
+        <td class="actions">
+        <a href="#" onclick="document.getElementById('show-button').submit();return false;">
+                <button type="button" class="show-button" id="show-button">Pokaż hasło</button>
+        </a>
+            <form action="?action=showPassword&id= <?php echo $password['id'] ?>" style="display:none">
+                <input type="hidden" name="show" value="true"></form>
+        <a href="?action=updatePassword&id=<?php echo $password['id']; ?>">
+            <button type="button" class="update-button" name="update-button">Edytuj hasło</button>
+        </a>
+        <a href="#" onclick="document.getElementById('delete-pass-form').submit();return false;">
+            <button type="button" class="delete-button" name="delete-button">Usuń hasło</button>
+        </a>
+            <form id="delete-pass-form"action="?action=deletePassword&id=<?php echo $password['id']?>" method="POST" style="display:none;">
+            <input type="hidden" name="delete" value="true"></form>
+            </td>
     </tr>
     <?php endforeach; ?>
   </tbody>

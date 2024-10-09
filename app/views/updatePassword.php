@@ -7,6 +7,7 @@
     <title>Document</title>
 </head>
 <body>
+<?php include 'navbar.php'; ?>
     <form action="?action=updatePassword" method="POST">
         <input type="hidden" name="id" value="<?php echo $password['id']; ?>">
         <label for="website">Nazwa strony</label><br>

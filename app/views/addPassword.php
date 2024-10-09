@@ -7,6 +7,7 @@
     <title>Document</title>
 </head>
 <body>
+<?php include 'navbar.php'; ?>
     <form action="?action=addPassword" method="POST">
         <label for="website">Nazwa strony</label><br>
         <input type="text" name="website" required><br>

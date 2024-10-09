@@ -17,7 +17,8 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
             case 'register':
                 $username=$_POST['username'];
                 $password=$_POST['password'];
-                $controller->register($username,$password);
+                $encryptMethod=$_POST['encryptOption'];
+                $controller->register($username,$password,$encryptMethod);
                 break;
             case 'login':
                 $username=$_POST['username'];
@@ -40,7 +41,21 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
                 $username=$_POST['username'];
                 $password=$_POST['password'];
                 $passwordController->editPassword( $id, $website,$username, $password);
-
+                break;
+            case 'deletePassword':
+                $id=$_GET['id'];
+                $passwordController->deletePassword($id);
+                break;
+            // case 'showPassword':
+            //     $showPassword=true;
+            //     $id=$_GET['id'];
+            //     $passwordController->showDecryptedPassword( $id );
+            //     break;
+            // case 'hidePassword':
+            //     $showPassword=false;
+            //     $id=$_GET['id'];
+            //     $passwordController->showEncryptedPassword( $id );
+            //     break;
         }
     }
 }else{

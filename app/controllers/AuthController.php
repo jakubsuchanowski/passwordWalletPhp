@@ -1,6 +1,7 @@
 <?php
 require_once 'app/models/User.php';
-require_once 'app/config.php';
+require_once 'app/config/database.php';
+require_once 'app/config/keys.php';
 class AuthController{
     private $user;
 
@@ -11,13 +12,35 @@ class AuthController{
         $this->user=new User($conn);
         }
 
-    public function register($username, $password){
+    private function generateSalt(){
+        return bin2hex(random_bytes(16));
+    }
+    private function encryptHMAC($password){ 
+        $hash=hash_hmac('sha512',$password,PEPPER);
+        return $hash;
+    }
+
+    private function encryptSHA512($password, $salt){
+        $hash=hash('sha512',$password.$salt.PEPPER);
+        return $hash;   
+    }
+    
+    public function register($username, $password, $encryptMethod){
+        // var_dump('Rejestracja rozpoczęta');
         if(empty($username) || empty($password)){
             $_SESSION['error'] = "Wszystkie pola są wymagane.";
             header("Location: ?action=register");
             exit();
         }
-        $result= $this->user->register($username,$password);
+        if($encryptMethod==='HMAC'){
+            $hashedPassword=$this->encryptHMAC($password);
+            $result=$this->user->registerWithHMAC($username, $hashedPassword,$encryptMethod);
+        }else if($encryptMethod==='Sha512'){
+            $salt=$this->generateSalt();
+            $hashedPassword=$this->encryptSHA512($password, $salt);
+            $result=$this->user->registerWithSHA512($username, $hashedPassword,$encryptMethod,$salt);
+        }
+        
         if($result===true){
             $_SESSION['success']= "Rejestracja zakończona sukcesem.";
             header("Location: ?action=login");
@@ -35,7 +58,16 @@ class AuthController{
             header("Location: ?action=login");
             exit();
         }
-        $result= $this->user->login($username,$password);
+        $encryptMethod=$this->user->getEncryptMethodByUsername($username);
+        if($encryptMethod=== "hmac"){
+            $hashedPassword=$this->encryptHMAC($password);
+            $result=$this->user->login($username, $hashedPassword);
+        }
+        if($encryptMethod==="sha512"){
+            $salt=$this->user->getSalt($username);
+            $hashedPassword=$this->encryptSHA512($password, $salt);
+            $result=$this->user->login($username, $hashedPassword);
+        }
         if ($result === true) {
             $_SESSION["username"] = $username; 
 

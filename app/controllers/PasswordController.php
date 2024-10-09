@@ -34,7 +34,6 @@ class PasswordController{
             return [];
         }else{
             return $passwords;
-
         }
 
     }
@@ -64,5 +63,30 @@ class PasswordController{
             $_SESSION["error"]= "Nie udało zaktualizować hasła.";
         }
     }
+
+    public function deletePassword($id){
+        $result = $this->password->delete($id);
+        if($result){
+            $_SESSION["success"]= "Hasło zostało usunięte.";
+            header("Location: ?action=dashboard");
+        }else{
+            $_SESSION['error']="Nie udało usunąć się hasła.";
+        }
+    }
+
+    public function showDecryptedPassword($id){
+        $hashedPassword=$this->password->findPasswordById($id);
+        if(empty($hashedPassword)){
+            $_SESSION["error"]= "Nie odnaleziono hasła.";
+        }else{
+            $result=$this->password->getDecryptPassword($hashedPassword);
+            return $result;
+        }
+    }
+
+    public function showEncryptedPassword($id){
+        $hashedPassword=$this->password->findPasswordById($id);
+        return $hashedPassword;
+        }
 }
 ?>

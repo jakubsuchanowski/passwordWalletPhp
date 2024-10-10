@@ -67,10 +67,13 @@ class AuthController{
             $salt=$this->user->getSalt($username);
             $hashedPassword=$this->encryptSHA512($password, $salt);
             $result=$this->user->login($username, $hashedPassword);
+        }else{
+            $_SESSION["error"]="Nie znaleziono użytkownika.";
+            header("Location: ?action=login");
+            exit();
         }
         if ($result === true) {
             $_SESSION["username"] = $username; 
-
             $_SESSION["user_id"]= $this->user->getUserIdByUserName($username);
             header("Location: ?action=dashboard"); 
             exit(); 

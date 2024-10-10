@@ -34,6 +34,7 @@ class Password{
         $result = $stmt->get_result();
         $passwords = [];
         while ($row = $result->fetch_assoc()) {
+            $row['password']=$this->decryptPassword($row['password']);
             $passwords[] = $row;
         }
         return $passwords; 
@@ -66,11 +67,6 @@ class Password{
         if($stmt->execute()){
             return true;
         }else{return false;}
-    }
-
-    public function getDecryptPassword($hashedPassword){
-        $decryptedPassword=$this->decryptPassword($hashedPassword);
-        return $decryptedPassword;
     }
    
 }

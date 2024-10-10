@@ -38,9 +38,9 @@ class User{
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $result=$stmt->get_result();
+        var_dump($result->num_rows);
         if($result->num_rows===1 ){
             $user = $result->fetch_assoc();
-            // var_dump(hash_equals($user['password'],$inputPassword));
             if(hash_equals($user['password'],$inputPassword)){
                 return true;
         } else{

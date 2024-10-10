@@ -28,7 +28,6 @@ class PasswordController{
         }
     
         $passwords=$this->password->getPasswords($user_id);
-        // var_dump($passwords);
         if(empty($passwords)){
             $_SESSION['error']="Nie udało się pobrać haseł. Brak haseł.";
             return [];
@@ -72,22 +71,5 @@ class PasswordController{
             $_SESSION['error']="Nie udało usunąć się hasła.";
         }
     }
-
-    public function showDecryptedPassword($id){
-        $passwordObject=$this->password->findPasswordObjectById($id);
-        $hashedPassword=$passwordObject["password"];
-        // var_dump($hashedPassword);
-        if(empty($hashedPassword)){
-            $_SESSION["error"]= "Nie odnaleziono hasła.";
-        }else{
-            $result=$this->password->getDecryptPassword($hashedPassword);
-            return $result;
-        }
-    }
-
-    public function showEncryptedPassword($id){
-        $hashedPassword=$this->password->findPasswordObjectById($id);
-        return $hashedPassword;
-        }
 }
 ?>

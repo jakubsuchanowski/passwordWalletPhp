@@ -8,7 +8,6 @@ $passwordController=new PasswordController($encryption_key);
 $error_message = isset($_SESSION['error']) ? $_SESSION['error'] : null;
 $success_message = isset($_SESSION['success']) ? $_SESSION['success'] : null;
 
-// Wyczyść komunikaty po wyświetleniu
 unset($_SESSION['error']);
 unset($_SESSION['success']);
 if($_SERVER['REQUEST_METHOD']==='POST'){
@@ -57,7 +56,6 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
                 
                 // var_dump($_SESSION['showPassword']['id']);
                 header("Location: ?action=dashboard");
-                // $passwordController->showEncryptedPassword( $id );
                 break;
         }
     }
